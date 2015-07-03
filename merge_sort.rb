@@ -1,17 +1,24 @@
-def merge_sort(ary)
-	if ary.length == 1
-		return ary
-	elsif ary.length == 2
-    if ary.first <= ary.last
-      ary
-    else
-      ary[0], ary[-1] = ary[-1], ary[0]
-      ary
-    end
+def merge_sort(array)
+  if array.length <= 1
+    array
   else
-    left,right = ary.each_slice( (ary.size/2.0).round ).to_a
-    return merge_sort(left).concat(merge_sort(right))
-	end
+    mid = (array.length / 2).floor
+    left = merge_sort(array[0..mid - 1])
+    right = merge_sort(array[mid..array.length])
+    merge(left, right)
+  end
 end
 
-p merge_sort([3,2,4,5,7])
+def merge(left, right)
+  if left.empty?
+    right
+  elsif right.empty?
+    left
+  elsif left.first < right.first
+    [left.first] + merge(left[1..left.length], right)
+  else
+    [right.first] + merge(left, right[1..right.length])
+  end
+end
+
+p merge_sort([1,4,2,9,7,8,5])
